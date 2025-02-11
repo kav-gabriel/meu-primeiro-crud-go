@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/HumCoding/meu-primeiro-crud-go/src/configuration/rest_err"
-	"github.com/HumCoding/meu-primeiro-crud-go/src/model"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/rest_err"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/model"
 )
 
 func NewUserDomainService() UserDomainService {
@@ -12,7 +12,7 @@ func NewUserDomainService() UserDomainService {
 type userDomainService struct {
 }
 
-func (ud *userDomainService) DeleteUser(string) *rest_err.RestErr {
+func (ud *userDomainService) deleteUser(string) *rest_err.RestErr {
 	panic("unimplemented")
 }
 

@@ -3,9 +3,9 @@ package service
 import (
 	"fmt"
 
-	"github.com/HumCoding/meu-primeiro-crud-go/src/configuration/logger"
-	"github.com/HumCoding/meu-primeiro-crud-go/src/configuration/rest_err"
-	"github.com/HumCoding/meu-primeiro-crud-go/src/model"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/logger"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/rest_err"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/model"
 	"go.uber.org/zap"
 )
 
@@ -17,7 +17,7 @@ func (ud *userDomainService) CreateUser(
 
 	userDomain.EncryptPassword()
 
-	fmt.Println(userDomain.GetPassword())
+	fmt.Println(ud)
 
 	return nil
 }

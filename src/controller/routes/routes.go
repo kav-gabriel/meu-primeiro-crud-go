@@ -1,15 +1,17 @@
 package routes
 
 import (
-	"github.com/HumCoding/meu-primeiro-crud-go/src/controller"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/controller"
 	"github.com/gin-gonic/gin"
 )
 
-func InitRoutes(r *gin.RouterGroup) {
+func InitRoutes(
+	r *gin.RouterGroup,
+	userController controller.UserControllerInterface) {
 
-	r.GET("/getUserById/:userId", controller.FindUserByID)
-	r.GET("/getUserByEmail/:userEmail", controller.FindUserByEMAIL)
-	r.POST("/createUser", controller.CreateUser)
-	r.PUT("updateUser/:userId", controller.UpdateUser)
-	r.DELETE("deleteUser/:userId", controller.DeleteUser)
+	r.GET("/getUserById/:userId", userController.FindUserByID)
+	r.GET("/getUserByEmail/:userEmail", userController.FindUserByEmail)
+	r.POST("/createUser", userController.CreateUser)
+	r.PUT("updateUser/:userId", userController.UpdateUser)
+	r.DELETE("deleteUser/:userId", userController.DeleteUser)
 }

@@ -3,16 +3,16 @@ package controller
 import (
 	"net/http"
 
-	"github.com/HumCoding/meu-primeiro-crud-go/src/configuration/logger"
-	"github.com/HumCoding/meu-primeiro-crud-go/src/configuration/validation"
-	"github.com/HumCoding/meu-primeiro-crud-go/src/controller/model/request"
-	"github.com/HumCoding/meu-primeiro-crud-go/src/model"
-	"github.com/HumCoding/meu-primeiro-crud-go/src/model/service"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/logger"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/validation"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/controller/model/request"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/model"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/model/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
-func CreateUser(c *gin.Context) {
+func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("Init CreateUser controller",
 		zap.String("journey", "createUser"),
 	)

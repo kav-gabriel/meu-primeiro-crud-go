@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/HumCoding/meu-primeiro-crud-go/src/configuration/rest_err"
+	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/rest_err"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
