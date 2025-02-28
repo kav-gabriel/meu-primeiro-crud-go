@@ -12,46 +12,62 @@ import (
 	en_translation "github.com/go-playground/validator/v10/translations/en"
 )
 
-var (
-	Validate *validator.Validate
-	transl   ut.Translator
-)
+func initializeValidator() (*validator.Validate, ut.Translator, error) {
+	validate := validator.New()
+	enLocale := en.New()
+	uniTrans := ut.New(enLocale, enLocale)
 
-func init() {
-	Validate = validator.New()
-	if val, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		enLocale := en.New()
-		uniTrans := ut.New(enLocale, enLocale)
-		transl, _ = uniTrans.GetTranslator("en")
-		en_translation.RegisterDefaultTranslations(val, transl)
+	translator, ok := uniTrans.GetTranslator("en")
+	if !ok {
+		return nil, nil, errors.New("unable to get translator for 'en' locale")
 	}
+
+	if val, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		en_translation.RegisterDefaultTranslations(val, translator)
+	}
+
+	return validate, translator, nil
 }
 
-// ValidateUserError translates and formats validation errors into a RestErr.
-func ValidateUserError(validationErr error) *rest_err.RestErr {
+func ValidateUserError(validationErr error, translator ut.Translator) *rest_err.RestErr {
 	var jsonErr *json.UnmarshalTypeError
 	var validationErrors validator.ValidationErrors
 
-	// Check for JSON unmarshaling error
 	if errors.As(validationErr, &jsonErr) {
-		return rest_err.NewBadRequestError("Invalid field type")
+		return rest_err.NewBadRequestError("Tipo de campo inválido")
 	}
 
-	// Check for validation errors
 	if errors.As(validationErr, &validationErrors) {
-		errorCauses := []rest_err.Cause{}
-
-		for _, e := range validationErrors {
-			cause := rest_err.Cause{
-				Message: e.Translate(transl), // Translate error message
-				Field:   e.Field(),           // Get the field name
-			}
-			errorCauses = append(errorCauses, cause)
-		}
-
-		return rest_err.NewBadRequestValidationError("Some fields are invalid", errorCauses)
+		return formatValidationErrors(validationErrors, translator)
 	}
 
-	// Generic error for unexpected issues
-	return rest_err.NewBadRequestError("Error trying to convert fields")
+	return rest_err.NewBadRequestError("Erro ao tentar converter os campos")
+}
+
+func formatValidationErrors(validationErrors validator.ValidationErrors, translator ut.Translator) *rest_err.RestErr {
+	errorCauses := make([]rest_err.Cause, len(validationErrors))
+
+	for i, e := range validationErrors {
+		cause := rest_err.Cause{
+			Message: e.Translate(translator),
+			Field:   e.Field(),
+		}
+		errorCauses[i] = cause
+	}
+
+	return rest_err.NewBadRequestValidationError("Alguns campos são inválidos", errorCauses)
+}
+
+func ValidarUsandoValidador(obj interface{}) *rest_err.RestErr {
+	validate, translator, err := initializeValidator()
+	if err != nil {
+		// return rest_err.NewInternalServerError("Erro interno ao inicializar validador")
+	}
+
+	err = validate.Struct(obj)
+	if err != nil {
+		return ValidateUserError(err, translator)
+	}
+
+	return nil
 }

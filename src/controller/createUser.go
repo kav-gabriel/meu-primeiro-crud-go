@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/logger"
-	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/validation"
 	"github.com/HunCoding/meu-primeiro-crud-go/src/controller/model/request"
 	"github.com/HunCoding/meu-primeiro-crud-go/src/model"
 	"github.com/HunCoding/meu-primeiro-crud-go/src/model/service"
@@ -18,14 +17,14 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 	)
 	var userRequest request.UserRequest
 
-	if err := c.ShouldBindJSON(&userRequest); err != nil {
-		logger.Error("Error trying to validate user info", err,
-			zap.String("journey", "createUser"))
-		errRest := validation.ValidateUserError(err)
+	// if err := c.ShouldBindJSON(&userRequest); err != nil {
+	// 	logger.Error("Error trying to validate user info", err,
+	// 		zap.String("journey", "createUser"))
+	// 	errRest := validation.ValidateUserError(err)
 
-		c.JSON(errRest.Code, errRest)
-		return
-	}
+	// 	c.JSON(errRest.Code, errRest)
+	// 	return
+	// }
 
 	domain := model.NewUserDomain(
 		userRequest.Email,
